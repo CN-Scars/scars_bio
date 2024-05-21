@@ -18,12 +18,13 @@ export default {
     name: 'HomePage',
     components: {
         AboutMe,
-        Skill,
         Projects,
+        Skill,
+
     },
     data() {
         return {
-            components: ['AboutMe', 'Skill', 'Projects'],
+            components: ['AboutMe', 'Projects', 'Skill'],
             currentComponent: 0,
             lock: false,
         };
