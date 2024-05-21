@@ -1,14 +1,18 @@
 <template>
-    <v-app>
-        <v-main>
-            <!-- 使用 router-view 显示路由匹配的组件 -->
-            <router-view />
-        </v-main>
-    </v-app>
+    <router-view></router-view>
 </template>
 
 <script>
 export default {
     name: 'App',
-}
+};
 </script>
+
+<style>
+html,
+body,
+#app {
+    height: 100%;
+    margin: 0;
+}
+</style>

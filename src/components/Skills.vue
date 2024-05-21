@@ -1,18 +1,18 @@
 <template>
-    <div class="about-me">
-        <h1>About Me</h1>
+    <div class="skill">
+        <h1>Skill</h1>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'AboutMe',
+    name: 'MySkills',
 };
 </script>
 
 <style scoped>
-.about-me {
-    background-color: #f44336;
+.skill {
+    background-color: #4caf50;
     color: white;
     width: 100%;
     height: 100%;
