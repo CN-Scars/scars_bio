@@ -31,8 +31,8 @@ export default {
     methods: {
         async fetchSkills() {
             try {
-                const username = 'CN-Scars';
-                const repo = 'CN-Scars';
+                const username = process.env.VUE_APP_GITHUB_USERNAME;
+                const repo = process.env.VUE_APP_GITHUB_USERNAME;
                 const path = 'README.md';
                 const url = `https://raw.githubusercontent.com/${username}/${repo}/main/${path}`;
 
