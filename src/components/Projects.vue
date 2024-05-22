@@ -5,7 +5,7 @@
                 <h1>个人项目</h1>
             </v-col>
             <v-col cols="12" class="carousel">
-                <v-carousel hide-delimiter-background>
+                <v-carousel v-if="projects.length" hide-delimiter-background>
                     <v-carousel-item v-for="(item, index) in projects" :key="index" class="item">
                         <a :href="item.url" target="_blank" class="projectTitle">
                             {{ item.title }}
@@ -13,33 +13,58 @@
                         <div class="content">{{ item.content }}</div>
                     </v-carousel-item>
                 </v-carousel>
+                <div v-else>加载中...</div>
             </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
+import { request, gql } from 'graphql-request';
+
 export default {
     name: "MyProjects",
     data() {
         return {
-            projects: [
-                {
-                    title: "项目1",
-                    content: "项目1的介绍",
-                    url: "https://example.com"
-                },
-                {
-                    title: "项目2",
-                    content: "项目2的介绍",
-                    url: "https://example.com"
-                },
-                {
-                    title: "项目3",
-                    content: "项目3的介绍",
-                    url: "https://example.com"
+            projects: []
+        }
+    },
+    async mounted() {
+        try {
+            const token = process.env.VUE_APP_GITHUB_TOKEN; // 从.env文件中获取GitHub Token
+            const username = process.env.VUE_APP_GITHUB_USERNAME;   // 从.env文件中获取GitHub用户名
+
+            const endpoint = 'https://api.github.com/graphql';
+            const query = gql`
+                query($username: String!) {
+                    user(login: $username) {
+                        pinnedItems(first: 10, types: REPOSITORY) {
+                            nodes {
+                                ... on Repository {
+                                    name
+                                    description
+                                    url
+                                }
+                            }
+                        }
+                    }
                 }
-            ]
+            `;
+            const variables = { username };
+
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+
+            const response = await request(endpoint, query, variables, headers);
+
+            this.projects = response.user.pinnedItems.nodes.map(repo => ({
+                title: repo.name,
+                content: repo.description,
+                url: repo.url
+            }));
+        } catch (error) {
+            console.error('Error fetching pinned repositories:', error);
         }
     }
 }
@@ -80,11 +105,26 @@ export default {
     transition: all 300ms;
     font-size: 2.5rem;
     color: darkslategrey;
-    border-bottom: 2px darkslategray solid;
+    text-decoration: none;
+    position: relative;
+}
+
+.projectTitle::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background-color: darkslategray;
+    transition: all 300ms;
 }
 
 .projectTitle:hover {
     color: #9f3;
-    border-bottom-color: #9f3;
+}
+
+.projectTitle:hover::after {
+    background-color: #9f3;
 }
 </style>
