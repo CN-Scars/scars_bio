@@ -2,15 +2,14 @@
     <v-container class="root fill-height" fluid>
         <v-row align="center" justify="center" class="text-center">
             <v-col cols="12">
-                <v-img id="avatar" src="@/assets/scars_logo.png" max-width="150" aspect-ratio="1" class="mx-auto"
-                    contain></v-img>
+                <v-img id="avatar" :src="avatarUrl" max-width="150" aspect-ratio="1" class="mx-auto" contain></v-img>
             </v-col>
             <v-col cols="12">
-                <h1 class="name">Scars</h1>
+                <h1 class="name">{{ name }}</h1>
             </v-col>
             <v-col cols="12">
                 <div class="subTitle">
-                    Scars的简介
+                    {{ bio }}
                 </div>
             </v-col>
         </v-row>
@@ -18,8 +17,36 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: "AboutMe",
+    data() {
+        return {
+            name: process.env.VUE_APP_NAME,
+            bio: '',   // GitHub用户简介
+            avatarUrl: ''  // GitHub用户头像
+        };
+    },
+    mounted() {
+        this.fetchGithubInfo();
+    },
+    methods: {
+        async fetchGithubInfo() {
+            const username = process.env.VUE_APP_GITHUB_USERNAME;
+            const token = process.env.VUE_APP_GITHUB_TOKEN;
+            try {
+                const response = await axios.get(`https://api.github.com/users/${username}`, {
+                    headers: { 'Authorization': `token ${token}` }
+                });
+                this.bio = response.data.bio;
+                this.avatarUrl = response.data.avatar_url;
+            } catch (error) {
+                console.error('Error fetching GitHub data:', error);
+                // 处理错误，如显示错误消息
+            }
+        }
+    }
 };
 </script>
 
