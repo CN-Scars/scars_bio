@@ -22,7 +22,6 @@ jobs:
       run: |
         echo "VUE_APP_NAME=${{ secrets.VUE_APP_NAME }}" >> .env
         echo "VUE_APP_GITHUB_USERNAME=${{ secrets.VUE_APP_GITHUB_USERNAME }}" >> .env
-        echo "VUE_APP_GITHUB_TOKEN=${{ secrets.VUE_APP_GITHUB_TOKEN }}" >> .env
 
     - name: Install dependencies
       run: npm install
@@ -31,7 +30,6 @@ jobs:
       env:
         VUE_APP_NAME: ${{ secrets.VUE_APP_NAME }}
         VUE_APP_GITHUB_USERNAME: ${{ secrets.VUE_APP_GITHUB_USERNAME }}
-        VUE_APP_GITHUB_TOKEN: ${{ secrets.VUE_APP_GITHUB_TOKEN }}
       run: npm run build
 
     - name: Deploy to GitHub Pages

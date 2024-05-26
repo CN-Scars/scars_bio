@@ -23,7 +23,7 @@ export default {
     name: "AboutMe",
     data() {
         return {
-            name: process.env.VUE_APP_NAME,
+            name: process.env.VUE_APP_NAME || "Scars",
             bio: '',   // GitHub用户简介
             avatarUrl: ''  // GitHub用户头像
         };
@@ -33,12 +33,9 @@ export default {
     },
     methods: {
         async fetchGithubInfo() {
-            const username = process.env.VUE_APP_GITHUB_USERNAME;
-            const token = process.env.VUE_APP_GITHUB_TOKEN;
+            const username = process.env.VUE_APP_GITHUB_USERNAME || "CN-Scars";
             try {
-                const response = await axios.get(`https://api.github.com/users/${username}`, {
-                    headers: { 'Authorization': `token ${token}` }
-                });
+                const response = await axios.get(`https://api.github.com/users/${username}`);
                 this.bio = response.data.bio;
                 this.avatarUrl = response.data.avatar_url;
             } catch (error) {
@@ -78,6 +75,5 @@ export default {
     font-size: 1.2rem;
     padding: 0 2rem;
     text-align: center;
-    /* margin-top: 10px; */
 }
 </style>

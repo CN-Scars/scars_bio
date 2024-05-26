@@ -5,7 +5,7 @@
                 <h1>个人项目</h1>
             </v-col>
             <v-col cols="12" class="carousel">
-                <v-carousel v-if="projects.length" hide-delimiter-background>
+                <v-carousel hide-delimiter-background v-if="!isLoading">
                     <v-carousel-item v-for="(item, index) in projects" :key="index" class="item">
                         <a :href="item.url" target="_blank" class="projectTitle">
                             {{ item.title }}
@@ -13,58 +13,43 @@
                         <div class="content">{{ item.content }}</div>
                     </v-carousel-item>
                 </v-carousel>
-                <div v-else>加载中...</div>
+                <v-progress-circular v-else indeterminate color="primary"></v-progress-circular> <!-- 加载指示器 -->
             </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
-import { request, gql } from 'graphql-request';
+import axios from 'axios'; // 引入 axios 库来处理 HTTP 请求
 
 export default {
     name: "MyProjects",
     data() {
         return {
-            projects: []
+            projects: [], // 初始为空，等待API填充
+            isLoading: true // 加载状态指示
         }
     },
-    async mounted() {
-        try {
-            const token = process.env.VUE_APP_GITHUB_TOKEN; // 从.env文件中获取GitHub Token
-            const username = process.env.VUE_APP_GITHUB_USERNAME;   // 从.env文件中获取GitHub用户名
+    mounted() {
+        this.fetchGitHubProjects();
+    },
+    methods: {
+        async fetchGitHubProjects() {
+            const username = process.env.VUE_APP_GITHUB_USERNAME;
+            const url = `https://api.github.com/users/${username}/repos`;
 
-            const endpoint = 'https://api.github.com/graphql';
-            const query = gql`
-                query($username: String!) {
-                    user(login: $username) {
-                        pinnedItems(first: 10, types: REPOSITORY) {
-                            nodes {
-                                ... on Repository {
-                                    name
-                                    description
-                                    url
-                                }
-                            }
-                        }
-                    }
-                }
-            `;
-            const variables = { username };
-
-            const headers = {
-                Authorization: `Bearer ${token}`,
-            };
-
-            const response = await request(endpoint, query, variables, headers);
-
-            this.projects = response.user.pinnedItems.nodes.map(repo => ({
-                title: repo.name,
-                content: repo.description,
-                url: repo.url
-            }));
-        } catch (error) {
-            console.error('Error fetching pinned repositories:', error);
+            try {
+                const response = await axios.get(url);
+                this.projects = response.data.map(repo => ({
+                    title: repo.name,
+                    content: repo.description || '无描述', // 如果没有描述，则显示默认文本
+                    url: repo.html_url
+                }));
+            } catch (error) {
+                console.error('GitHub API 请求失败:', error);
+            } finally {
+                this.isLoading = false; // 完成加载，无论成功或失败
+            }
         }
     }
 }
@@ -105,26 +90,11 @@ export default {
     transition: all 300ms;
     font-size: 2.5rem;
     color: darkslategrey;
-    text-decoration: none;
-    position: relative;
-}
-
-.projectTitle::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -5px;
-    width: 100%;
-    height: 2px;
-    background-color: darkslategray;
-    transition: all 300ms;
+    border-bottom: 2px darkslategray solid;
 }
 
 .projectTitle:hover {
     color: #9f3;
-}
-
-.projectTitle:hover::after {
-    background-color: #9f3;
+    border-bottom-color: #9f3;
 }
 </style>
