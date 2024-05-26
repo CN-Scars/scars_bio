@@ -13,6 +13,7 @@
 import AboutMe from '../components/AboutMe.vue';
 import Skill from '../components/Skills.vue';
 import Projects from '../components/Projects.vue';
+import GitHubAnalytics from '../components/GitHubAnalytics.vue';
 
 export default {
     name: 'HomePage',
@@ -20,11 +21,11 @@ export default {
         AboutMe,
         Projects,
         Skill,
-
+        GitHubAnalytics,
     },
     data() {
         return {
-            components: ['AboutMe', 'Projects', 'Skill'],
+            components: ['AboutMe', 'Projects', 'Skill', 'GitHubAnalytics'],
             currentComponent: 0,
             lock: false,
         };

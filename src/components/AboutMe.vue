@@ -55,7 +55,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #22c3aa;
+    background: linear-gradient(135deg, #22c3aa 0%, #00BCD4 100%);
 }
 
 #avatar {

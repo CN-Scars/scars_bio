@@ -2,7 +2,7 @@
     <v-container class="root fill-height" fluid>
         <v-row align="center" justify="center" class="text-center">
             <v-col cols="12">
-                <h1>🛠 Tech Stack</h1>
+                <h1>🛠  Tech Stack</h1>
             </v-col>
             <v-col cols="12">
                 <v-row class="skills" justify="center">
@@ -58,7 +58,7 @@ export default {
 
 <style scoped>
 .root {
-    background-color: #22c3aa;
+    background: linear-gradient(135deg, #054b85 0%, #19078ad7 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -74,7 +74,7 @@ export default {
 }
 
 .word {
-    background-color: #00796b;
+    background: linear-gradient(135deg, #054b85 0%, #19078ad7 100%);
     color: #f3f3f3;
     border-radius: 5px;
     padding: 5px 10px;

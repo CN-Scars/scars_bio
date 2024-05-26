@@ -61,7 +61,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #00BCD4;
+    background: linear-gradient(135deg, #00BCD4 0%, #054b85 100%);
     overflow: auto;
 }
 
