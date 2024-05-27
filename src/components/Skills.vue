@@ -2,7 +2,7 @@
     <v-container class="root fill-height" fluid>
         <v-row align="center" justify="center" class="text-center">
             <v-col cols="12">
-                <h1>🛠 Tech Stack</h1>
+                <h1 class="tech-stack-title">🛠 Tech Stack</h1>
             </v-col>
             <v-col cols="12">
                 <v-row class="skills" justify="center">
@@ -65,9 +65,9 @@ export default {
     align-items: center;
 }
 
-h1 {
-    margin-bottom: 20px;
-    color: #333;
+.tech-stack-title {
+    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Segoe UI', 'Roboto', sans-serif;
+    color: #fff;
 }
 
 .skills {
