@@ -6,7 +6,7 @@
             </v-col>
             <v-col cols="12">
                 <v-row class="skills" justify="center">
-                    <v-col v-for="(item, index) in skills" :key="index" class="word" cols="auto">
+                    <v-col v-for="(item, index) in skills" :key="index" class="word skill-card" cols="auto">
                         <img :src="item.url" :alt="item.name" class="skill-image" />
                     </v-col>
                 </v-row>
@@ -16,13 +16,13 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
     name: "MySkills",
     data() {
         return {
-            skills: []
+            skills: [],
         };
     },
     mounted() {
@@ -33,26 +33,26 @@ export default {
             try {
                 const username = process.env.VUE_APP_GITHUB_USERNAME;
                 const repo = process.env.VUE_APP_GITHUB_USERNAME;
-                const path = 'README.md';
+                const path = "README.md";
                 const url = `https://raw.githubusercontent.com/${username}/${repo}/main/${path}`;
 
                 const response = await axios.get(url);
                 const markdownContent = response.data;
                 this.extractSkills(markdownContent);
             } catch (error) {
-                console.error('Error fetching skills:', error);
+                console.error("Error fetching skills:", error);
             }
         },
         extractSkills(markdownContent) {
-            const techStackSection = markdownContent.split('### 🛠 &nbsp;Tech Stack')[1];
+            const techStackSection = markdownContent.split("### 🛠 &nbsp;Tech Stack")[1];
             const skillImages = techStackSection.match(/!\[.*?\]\((.*?)\)/g) || [];
-            this.skills = skillImages.map(img => {
+            this.skills = skillImages.map((img) => {
                 const url = img.match(/\((.*?)\)/)[1];
                 const name = img.match(/\[([^\]]*)\]/)[1];
                 return { name, url };
             });
-        }
-    }
+        },
+    },
 };
 </script>
 
@@ -66,7 +66,8 @@ export default {
 }
 
 .tech-stack-title {
-    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Segoe UI', 'Roboto', sans-serif;
+    font-family: "Segoe UI Emoji", "Apple Color Emoji", "Segoe UI", "Roboto",
+        sans-serif;
     color: #fff;
 }
 
@@ -82,8 +83,13 @@ export default {
     background: linear-gradient(135deg, #054b85 0%, #19078ad7 100%);
     color: #f3f3f3;
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 10px 15px;
     margin: 5px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.word:hover {
+    transform: scale(1.2);
 }
 
 .skill-image {
