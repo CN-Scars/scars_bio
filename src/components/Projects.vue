@@ -101,7 +101,6 @@ export default {
     font-size: 1.5rem;
     /* 调整字体大小以便在较小屏幕上更易阅读 */
     color: darkslategrey;
-    border-bottom: 2px darkslategray solid;
     word-wrap: break-word;
     /* 添加自动换行 */
     word-break: break-word;
